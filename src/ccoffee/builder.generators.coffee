@@ -80,8 +80,8 @@ class Builder extends EventEmitter
 				"--noLib"]
 					.include(@tsFiles()),
 			cwd: "#{@output_dir}/"
-		@proc.stderr.setEncoding 'utf8'
-		@proc.stderr.on 'data', (err) =>
+		@proc.stdout.setEncoding 'utf8'
+		@proc.stdout.on 'data', (err) =>
 			# filter out the file path
 			remove = "#{@output_dir}#{@sep}"
 			while ~err.indexOf remove

@@ -92,8 +92,8 @@
       this.proc = spawn("" + __dirname + "/../../node_modules/typescript/bin/tsc", ["" + __dirname + "/../../d.ts/ecma.d.ts", "--module", "commonjs", "--declaration", "--sourcemap", "--noLib"].include(this.tsFiles()), {
         cwd: "" + this.output_dir + "/"
       });
-      this.proc.stderr.setEncoding('utf8');
-      this.proc.stderr.on('data', function(err) {
+      this.proc.stdout.setEncoding('utf8');
+      this.proc.stdout.on('data', function(err) {
         var remove;
         remove = "" + _this.output_dir + _this.sep;
         while (~err.indexOf(remove)) {
