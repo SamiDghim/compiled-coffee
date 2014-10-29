@@ -123,10 +123,7 @@ interface Object {
     [s: string]: any;
 }
 
-/**
-  * Provides functionality common to all JavaScript objects.
-  */
-declare var Object: {
+interface ObjectStatic {
     new (value?: any): Object;
     (): any;
     (value: any): any;
@@ -221,6 +218,11 @@ declare var Object: {
 }
 
 /**
+  * Provides functionality common to all JavaScript objects.
+  */
+declare var Object: ObjectStatic;
+
+/**
   * Creates a new function.
   */
 interface Function {
@@ -254,8 +256,8 @@ interface Function {
     caller: Function;
 }
 
-declare var Function: {
-    /** 
+interface FunctionStatic {
+    /**
       * Creates a new function.
       * @param args A list of arguments the function accepts.
       */
@@ -263,6 +265,8 @@ declare var Function: {
     (...args: string[]): Function;
     prototype: Function;
 }
+
+declare var Function: FunctionStatic;
 
 interface IArguments {
     [index: number]: any;
@@ -415,23 +419,28 @@ interface String {
     substr(from: number, length?: number): string;
 }
 
-/** 
-  * Allows manipulation and formatting of text strings and determination and location of substrings within strings. 
-  */
-declare var String: {
+interface StringStatic {
     new (value?: any): String;
     (value?: any): string;
     prototype: String;
     fromCharCode(...codes: number[]): string;
 }
 
+/** 
+  * Allows manipulation and formatting of text strings and determination and location of substrings within strings. 
+  */
+declare var String: StringStatic;
+
 interface Boolean {
 }
-declare var Boolean: {
+
+interface BooleanStatic {
     new (value?: any): Boolean;
     (value?: any): boolean;
     prototype: Boolean;
 }
+
+declare var Boolean: BooleanStatic;
 
 interface Number {
     toString(radix?: number): string;
@@ -439,8 +448,8 @@ interface Number {
     toExponential(fractionDigits?: number): string;
     toPrecision(precision: number): string;
 }
-/** An object that represents a number of any kind. All JavaScript numbers are 64-bit floating-point numbers. */
-declare var Number: {
+
+interface NumberStatic {
     new (value?: any): Number;
     (value?: any): number;
     prototype: Number;
@@ -448,22 +457,25 @@ declare var Number: {
     MAX_VALUE: number;
     /** The closest number to zero that can be represented in JavaScript. Equal to approximately 5.00E-324. */
     MIN_VALUE: number;
-    /** 
+    /**
       * A value that is not a number.
       * In equality comparisons, NaN does not equal any value, including itself. To test whether a value is equivalent to NaN, use the isNaN function.
       */
     NaN: number;
-    /** 
+    /**
       * A value that is less than the largest negative number that can be represented in JavaScript.
-      * JavaScript displays NEGATIVE_INFINITY values as -infinity. 
+      * JavaScript displays NEGATIVE_INFINITY values as -infinity.
       */
     NEGATIVE_INFINITY: number;
     /**
-      * A value greater than the largest number that can be represented in JavaScript. 
-      * JavaScript displays POSITIVE_INFINITY values as infinity. 
+      * A value greater than the largest number that can be represented in JavaScript.
+      * JavaScript displays POSITIVE_INFINITY values as infinity.
       */
     POSITIVE_INFINITY: number;
 }
+
+/** An object that represents a number of any kind. All JavaScript numbers are 64-bit floating-point numbers. */
+declare var Number: NumberStatic;
 
 interface Math {
     /** The mathematical constant e. This is Euler's number, the base of natural logarithms. */
@@ -728,10 +740,8 @@ interface Date {
     /** Used by the JSON.stringify method to enable the transformation of an object's data for JavaScript Object Notation (JSON) serialization. */ 
     toJSON(key?: any): string;
 }
-/**
-  * Enables basic storage and retrieval of dates and times.
-  */
-declare var Date: {
+
+interface DateStatic {
     new (): Date;
     new (value: number): Date;
     new (value: string): Date;
@@ -744,7 +754,7 @@ declare var Date: {
       */
     parse(s: string): number;
     /**
-      * Returns the number of milliseconds between midnight, January 1, 1970 Universal Coordinated Time (UTC) (or GMT) and the specified date. 
+      * Returns the number of milliseconds between midnight, January 1, 1970 Universal Coordinated Time (UTC) (or GMT) and the specified date.
       * @param year The full year designation is required for cross-century date accuracy. If year is between 0 and 99 is used, then year is assumed to be 1900 + year.
       * @param month The month as an integer between 0 and 11 (January to December).
       * @param date The date as an integer between 1 and 31.
@@ -756,6 +766,11 @@ declare var Date: {
     UTC(year: number, month: number, date?: number, hours?: number, minutes?: number, seconds?: number, ms?: number): number;
     now(): number;
 }
+
+/**
+  * Enables basic storage and retrieval of dates and times.
+  */
+declare var Date: DateStatic;
 
 interface RegExpExecArray {
     [index: number]: string;
@@ -815,7 +830,8 @@ interface RegExp {
     // Non-standard extensions
     compile(): RegExp;
 }
-declare var RegExp: {
+
+interface RegExpStatic {
     new (pattern: string, flags?: string): RegExp;
     (pattern: string, flags?: string): RegExp;
 
@@ -832,15 +848,20 @@ declare var RegExp: {
     lastMatch: string;
 }
 
+declare var RegExp: RegExpStatic;
+
 interface Error {
     name: string;
     message: string;
 }
-declare var Error: {
+
+interface ErrorStatic {
     new (message?: string): Error;
     (message?: string): Error;
     prototype: Error;
 }
+
+declare var Error: ErrorStatic;
 
 interface EvalError extends Error {
 }
@@ -968,7 +989,8 @@ interface Array<T> {
     length: number;
 
 }
-declare var Array: {
+
+interface ArrayStatic {
     new <T>(arrayLength: number): T[];
     new <T>(...items: T[]): T[];
     <T>(arrayLength: number): T[];
@@ -976,6 +998,8 @@ declare var Array: {
     isArray(arg: any): boolean;
     prototype: Array<any>;
 }
+
+declare var Array: ArrayStatic;
 
 
 ////////////////
