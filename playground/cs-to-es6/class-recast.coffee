@@ -7,7 +7,7 @@ dump = (obj) ->
 	console.log util.inspect obj, showHidden: false, depth: null
 
 types = recast.types
-visit = types.visit
+NodePath = types.NodePath
 n = types.namedTypes
 b = types.builders
 
@@ -31,11 +31,13 @@ getPath = (ast, node) ->
 		else
 			@traverse path
 	recast.visit ast, obj
-	console.log obj
 	found
 
+# TODO move this to Path.prototype.query
 query = (ast, selector) ->
-	if Array.isArray ast
+	if ast instanceof NodePath
+		ast = ast.value
+	if not ast.type
 		ast_fixed = type: 'Program', body: ast
 	else
 		ast_fixed = ast
@@ -50,17 +52,23 @@ recast.visit ast, visitExpressionStatement: (path) ->
 	class_name = expression.left.name
 
 	# check if there's a declaration for this class
-	var_declaration = query path.parentPath.value, "
+	var_declaration = query path.parentPath, "
 		> VariableDeclaration > Declaration! > ##{class_name}",
 	# check if theres a return for this class
-	return_statement = query path.value, "
+	return_statement = query path, "
 		> assign > CallExpression > FunctionExpression > BlockStatement
 		> FunctionDeclaration ~ ReturnStatement > ##{class_name}"
-	console.log var_declaration
-	console.log return_statement
-
+	# assert the checks
 	return if not var_declaration.length or not return_statement.length
-	console.log 'OK'
+
+#	old_class_body = query path.value, 'BlockStatement'
+
+#	console.log query old_class_body.value, '> assign'
+
+	path.replace b.classDeclaration (b.identifier class_name),
+		(b.classBody [])
+	console.log path
+	#	TODO use [MethodDefinition | VariableDeclarator | ClassPropertyDefinition | ClassProperty]
 #	console.log var_declaration
 #	console.log return_statement
 #
@@ -113,7 +121,7 @@ recast.visit ast, visitExpressionStatement: (path) ->
 #  else
 #    node.body = b.blockStatement([b.returnStatement(resultExpr)])
 
-#console.log recast.print(ast).code
+console.log recast.print(ast).code
 
 #search = """
 #var-decs

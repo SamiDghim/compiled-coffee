@@ -1,0 +1,94 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/usr/bin/node', '/usr/bin/npm', 'i', 'sweetjs' ]
+2 info using npm@2.0.0
+3 info using node@v0.11.14
+4 warn package.json gtd-bot@0.1.0 No README data
+5 verbose readDependencies using package.json deps
+6 verbose cache add [ 'sweetjs', null ]
+7 verbose cache add spec="sweetjs" args=["sweetjs",null]
+8 verbose parsed spec { raw: 'sweetjs',
+8 verbose parsed spec   scope: null,
+8 verbose parsed spec   name: 'sweetjs',
+8 verbose parsed spec   rawSpec: '',
+8 verbose parsed spec   spec: '*',
+8 verbose parsed spec   type: 'range' }
+9 verbose parsed spec { raw: 'sweetjs',
+9 verbose parsed spec   scope: null,
+9 verbose parsed spec   name: 'sweetjs',
+9 verbose parsed spec   rawSpec: '',
+9 verbose parsed spec   spec: '*',
+9 verbose parsed spec   type: 'range' }
+10 verbose addNamed [ 'sweetjs', '*' ]
+11 verbose addNamed [ null, '*' ]
+12 silly lockFile 8bca2102-sweetjs sweetjs@*
+13 verbose lock sweetjs@* /home/bob/.npm/8bca2102-sweetjs.lock
+14 silly addNameRange { name: 'sweetjs', range: '*', hasData: false }
+15 verbose mapToRegistry name sweetjs
+16 verbose mapToRegistry uri https://registry.npmjs.org/sweetjs
+17 verbose request on initialization, where is /sweetjs
+18 verbose request after pass 1, where is /sweetjs
+19 verbose request url raw /sweetjs
+20 verbose request resolving registry [ 'https://registry.npmjs.org/', './sweetjs' ]
+21 verbose request after pass 2, where is https://registry.npmjs.org/sweetjs
+22 verbose request no auth needed
+23 info attempt registry request try #1 at 00:32:18
+24 verbose request id 17009a95034b3a28
+25 http request GET https://registry.npmjs.org/sweetjs
+26 http 404 https://registry.npmjs.org/sweetjs
+27 verbose headers { date: 'Sat, 01 Nov 2014 23:29:04 GMT',
+27 verbose headers   server: 'CouchDB/1.5.0 (Erlang OTP/R16B03)',
+27 verbose headers   'content-type': 'application/json',
+27 verbose headers   'cache-control': 'max-age=0',
+27 verbose headers   'content-length': '52',
+27 verbose headers   'accept-ranges': 'bytes',
+27 verbose headers   via: '1.1 varnish',
+27 verbose headers   age: '0',
+27 verbose headers   'x-served-by': 'cache-ams4146-AMS',
+27 verbose headers   'x-cache': 'MISS',
+27 verbose headers   'x-cache-hits': '0',
+27 verbose headers   'x-timer': 'S1414884544.003537,VS0,VE380',
+27 verbose headers   connection: 'close' }
+28 silly registry.get cb [ 404,
+28 silly registry.get   { date: 'Sat, 01 Nov 2014 23:29:04 GMT',
+28 silly registry.get     server: 'CouchDB/1.5.0 (Erlang OTP/R16B03)',
+28 silly registry.get     'content-type': 'application/json',
+28 silly registry.get     'cache-control': 'max-age=0',
+28 silly registry.get     'content-length': '52',
+28 silly registry.get     'accept-ranges': 'bytes',
+28 silly registry.get     via: '1.1 varnish',
+28 silly registry.get     age: '0',
+28 silly registry.get     'x-served-by': 'cache-ams4146-AMS',
+28 silly registry.get     'x-cache': 'MISS',
+28 silly registry.get     'x-cache-hits': '0',
+28 silly registry.get     'x-timer': 'S1414884544.003537,VS0,VE380',
+28 silly registry.get     connection: 'close' } ]
+29 silly lockFile 8bca2102-sweetjs sweetjs@*
+30 silly lockFile 8bca2102-sweetjs sweetjs@*
+31 verbose stack Error: 404 Not Found: sweetjs
+31 verbose stack     at RegClient.<anonymous> (/usr/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:259:14)
+31 verbose stack     at Request._callback (/usr/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:198:65)
+31 verbose stack     at Request.self.callback (/usr/lib/node_modules/npm/node_modules/request/request.js:236:22)
+31 verbose stack     at Request.emit (events.js:110:17)
+31 verbose stack     at Request.<anonymous> (/usr/lib/node_modules/npm/node_modules/request/request.js:1142:14)
+31 verbose stack     at Request.emit (events.js:129:20)
+31 verbose stack     at IncomingMessage.<anonymous> (/usr/lib/node_modules/npm/node_modules/request/request.js:1096:12)
+31 verbose stack     at IncomingMessage.emit (events.js:129:20)
+31 verbose stack     at _stream_readable.js:907:16
+31 verbose stack     at process._tickCallback (node.js:372:11)
+32 verbose statusCode 404
+33 verbose pkgid sweetjs
+34 verbose cwd /home/bob/Dropbox/workspace/arch-dev/gtd-bot/playground/cs-to-es6
+35 error Linux 3.16.3-1-ARCH
+36 error argv "/usr/bin/node" "/usr/bin/npm" "i" "sweetjs"
+37 error node v0.11.14
+38 error npm  v2.0.0
+39 error code E404
+40 error 404 Not Found: sweetjs
+40 error 404
+40 error 404 'sweetjs' is not in the npm registry.
+40 error 404 You should bug the author to publish it (or use the name yourself!)
+40 error 404 It was specified as a dependency of 'gtd-bot'
+40 error 404
+40 error 404 Note that you can also install from a
+40 error 404 tarball, folder, http url, or git url.
+41 verbose exit [ 1, true ]
