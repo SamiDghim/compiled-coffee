@@ -101,15 +101,15 @@ class Builder extends EventEmitter
 #		(console.timeEnd 'tick')
 
 		if @pack
-			module_name = (@pack.split ':')[-1..-1]
+			[entry_file, module_name] = @pack.split ':'
 			# Pack
 			@proc = spawn "#{__dirname}/../../node_modules/browserify/bin/cmd.js", [
-					"-r", "./#{@pack}", 
-					"--no-builtins",
-					"--insert-globals",
+					"-e", entry_file
+					"--standalone", module_name
+					"-g", "#{__dirname}/../../node_modules/uglifyify"
+					"--detect-globals", "no"
 					"-o", "#{@output_dir}-pkg/#{module_name}.js"],
-			cwd: "#{@output_dir}/"
-			# @proc.on 'error', console.log
+				cwd: "#{@output_dir}/"
 			@proc.stderr.setEncoding 'utf8'
 			@proc.stderr.on 'data', (err) =>
 				# filter out the file path

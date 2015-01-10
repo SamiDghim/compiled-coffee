@@ -77,7 +77,7 @@
     });
 
     Builder.prototype.build = suspend.async(function*() {
-      var error, module_name, sources, tick, ts_warnings,
+      var entry_file, error, module_name, sources, tick, ts_warnings, _ref,
         _this = this;
       tick = ++this.clock;
       error = false;
@@ -115,8 +115,8 @@
         return this.emit('aborted');
       }
       if (this.pack) {
-        module_name = (this.pack.split(':')).slice(-1);
-        this.proc = spawn("" + __dirname + "/../../node_modules/browserify/bin/cmd.js", ["-r", "./" + this.pack, "--no-builtins", "--insert-globals", "-o", "" + this.output_dir + "-pkg/" + module_name + ".js"], {
+        _ref = this.pack.split(':'), entry_file = _ref[0], module_name = _ref[1];
+        this.proc = spawn("" + __dirname + "/../../node_modules/browserify/bin/cmd.js", ["-e", entry_file, "--standalone", module_name, "-g", "" + __dirname + "/../../node_modules/uglifyify", "--detect-globals", "no", "-o", "" + this.output_dir + "-pkg/" + module_name + ".js"], {
           cwd: "" + this.output_dir + "/"
         });
         this.proc.stderr.setEncoding('utf8');
