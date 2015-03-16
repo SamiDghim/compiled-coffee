@@ -9,7 +9,7 @@
 	"scripts": {"test": "make test"},
 	"dependencies": {
 		"coffee-script-to-typescript": "TobiaszCudnik/coffeescript-to-typescript#almost-master",
-		"typescript": "latest",
+		"typescript": "1.4.1",
 		"commander": "latest",
 		"suspend": "latest",
 		"async": "latest",
