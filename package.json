@@ -11,7 +11,7 @@
 		"coffee-script-to-typescript": "TobiaszCudnik/coffeescript-to-typescript#almost-master",
 		"typescript": "1.4.1",
 		"commander": "latest",
-		"suspend": "latest",
+		"suspend": "^0.6.1",
 		"async": "latest",
 		"sugar": "latest",
 		"uglifyify": "latest",
