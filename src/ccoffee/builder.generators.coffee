@@ -12,6 +12,7 @@ async = require 'async'
 #ts_yield = require 'typescript-yield'
 ts_yield = require '../../node_modules/typescript-yield/build/functions.js'
 fs = require 'fs'
+mkdirp = require 'mkdirp'
 writestreamp = require 'writestreamp'
 mergeDefinition = require('../dts-merger/merger').merge
 coffee_script = require "../../node_modules/coffee-script-to-" +
@@ -42,11 +43,11 @@ class Builder extends EventEmitter
 
 		@coffee_suffix = /\.coffee$/
 
-	prepareDirs: suspend.async ->
+	prepareDirs: suspend.callback ->
 		return if @build_dirs_created
 		dirs = [@output_dir]
 		dirs.push @output_dir + @sep + 'dist' if @pack
-		yield async.eachSeries dirs, (suspend.async (dir) =>
+		yield async.eachSeries dirs, (suspend.callback (dir) =>
 				exists = yield fs.exists dir, suspend.resumeRaw()
 				if not exists[0]
 					yield fs.mkdir dir, go()
@@ -56,7 +57,7 @@ class Builder extends EventEmitter
 			), go()
 		@build_dirs_created = yes
 
-	build: suspend.async ->
+	build: suspend.callback ->
 		tick = ++@clock
 		error = no
 
@@ -107,7 +108,7 @@ class Builder extends EventEmitter
 					"-e", entry_file
 					"--standalone", module_name
 					"-g", "#{__dirname}/../../node_modules/uglifyify"
-					"--detect-globals", "no"
+					"--detect-globals", "false"
 					"-o", "#{@output_dir}-pkg/#{module_name}.js"],
 				cwd: "#{@output_dir}/"
 			@proc.stderr.setEncoding 'utf8'
@@ -132,7 +133,7 @@ class Builder extends EventEmitter
 	dtsFiles: -> 
 		files = (file.replace @coffee_suffix, '.d.ts' for file in @files)
 
-#	saveTypeScript: suspend.async (files) ->
+#	saveTypeScript: suspend.callback (files) ->
 #
 #	# TODO tsapi.reset() on watch !!!
 #	compileTypeScript: (sources) ->
@@ -150,7 +151,7 @@ class Builder extends EventEmitter
 #				throw new TypeScriptError compiled if not tsapi.check compiled
 #				compiled
 
-	processSource: suspend.async (tick, file) ->
+	processSource: suspend.callback (tick, file) ->
 		source = yield @readSourceFile file, go()
 		return @emit 'aborted' if @clock isnt tick
 		source = @processCoffee file, source
@@ -173,11 +174,11 @@ class Builder extends EventEmitter
 			console.log message
 			throw new CoffeeScriptError
 
-	readSourceFile: suspend.async (file) ->
+	readSourceFile: suspend.callback (file) ->
 		yield fs.readFile ([@source_dir, file].join @sep), 
 			{encoding: 'utf8'}, go()
 
-	processBuiltSource: suspend.async (tick, file) ->
+	processBuiltSource: suspend.callback (tick, file) ->
 		js_file = file.replace @coffee_suffix, '.js'
 		source = yield fs.readFile @output_dir + @sep + js_file, 
 			{encoding: 'utf8'}, go()
@@ -188,17 +189,17 @@ class Builder extends EventEmitter
 	transpileYield: (source) ->
 		ts_yield.markGenerators ts_yield.unwrapYield source
 
-	writeTsFile: suspend.async (file, source) ->
+	writeTsFile: suspend.callback (file, source) ->
+		yield mkdirp @output_dir, go()
 		ts_file = file.replace @coffee_suffix, '.ts'
-		destination = writestreamp "#{@output_dir}/#{ts_file}"
-		yield destination.end source, 'utf8', go()
+		destination = fs.writeFileSync "#{@output_dir}/#{ts_file}", source
 
-	writeJsFile: suspend.async (file, source) ->
+	writeJsFile: suspend.callback (file, source) ->
+		yield mkdirp @output_dir, go()
 		js_file = file.replace @coffee_suffix, '.js'
-		destination = writestreamp "#{@output_dir}/#{js_file}"
-		yield destination.end source, 'utf8', go()
+		destination = fs.writeFileSync "#{@output_dir}/#{js_file}", source
 
-	mergeDefinition: suspend.async (file, source) ->
+	mergeDefinition: suspend.callback (file, source) ->
 		dts_file = file.replace @coffee_suffix, '.d.ts'
 		# no definition file, copy the transpiled source directly
 		exists = yield fs.exists @source_dir + @sep + dts_file, suspend.resumeRaw()
@@ -214,7 +215,7 @@ class Builder extends EventEmitter
 	clean: ->
 		throw new Error 'not implemented'
 
-	reload: suspend.async (refreshed) ->
+	reload: suspend.callback (refreshed) ->
 		console.log '-'.repeat 20 if refreshed
 		@proc?.kill()
 		try
@@ -226,7 +227,7 @@ class Builder extends EventEmitter
 			else
 				console.log "Compilation completed with warnings"
 
-	watch: suspend.async -> 
+	watch: suspend.callback -> 
 		for file in @files
 			node = @source_dir + @sep + file
 			fs.watchFile node, persistent: yes, interval: 500, => 
